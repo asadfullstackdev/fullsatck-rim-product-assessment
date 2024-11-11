@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  postgres_db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: backend_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+  elixir_backend:
+    build: .
+    environment:
+      MIX_ENV: prod
+      DATABASE_URL: postgresql://postgres:postgres@postgres_db:5432/backend_dev
+      SECRET_KEY_BASE: vMDgAnJyJlK4K3AkTKnprxgjrbLZ3nDE2VoxqqJOcjyXPXLxERtCXoAuxLqx1Qd7
+    depends_on:
+      - postgres_db
+    ports:
+      - "4000:4000"
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
