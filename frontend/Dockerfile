@@ -4,8 +4,8 @@ FROM node:16
 # Set working directory
 WORKDIR /app
 
-# Copy project files
-COPY . .
+# Copy only package.json and package-lock.json first to install dependencies
+COPY package*.json ./
 
 # Install necessary dependencies for Electron
 RUN apt-get update && apt-get install -y \
@@ -24,10 +24,14 @@ RUN apt-get update && apt-get install -y \
     libnspr4 \
     libpango1.0-0 \
     libxss1 \
-    xdg-utils
+    xdg-utils && \
+    apt-get clean
 
 # Install dependencies via npm
 RUN npm install
+
+# Copy the rest of the project files
+COPY . .
 
 # Expose port 3000 for the frontend
 EXPOSE 3000

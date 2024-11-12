@@ -3,7 +3,8 @@ const fetch = require("node-fetch");
 
 let mainWindow;
 
-function createWindow() {
+// Create a new BrowserWindow
+const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -12,38 +13,33 @@ function createWindow() {
       contextIsolation: false,
     },
   });
-
   mainWindow.loadFile("index.html");
+  mainWindow.on("closed", () => (mainWindow = null));
+};
 
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
-}
+// Fetch machines from the API
+const fetchMachines = async () => {
+  try {
+    const response = await fetch("http://localhost:4000/api/machines");
+    return response.ok ? await response.json() : [];
+  } catch (error) {
+    console.error("Failed to fetch machines:", error);
+    return [];
+  }
+};
 
-// Fetch the machines from the API
-async function fetchMachines() {
-  const response = await fetch("http://localhost:4000/api/machines");
-  const machines = await response.json();
-  return machines;
-}
+ipcMain.handle("get-machines", fetchMachines);
 
-ipcMain.handle("get-machines", async () => {
-  const machines = await fetchMachines();
-  return machines;
-});
-
-app.whenReady().then(() => {
+// Initialize the app
+const initializeApp = () => {
   createWindow();
 
   app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-});
+};
 
+app.whenReady().then(initializeApp);
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+  if (process.platform !== "darwin") app.quit();
 });

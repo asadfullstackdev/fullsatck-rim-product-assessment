@@ -1,16 +1,16 @@
 const { ipcRenderer } = require("electron");
 
-document.getElementById("submit-keyword").addEventListener("click", () => {
+document.getElementById("submit").addEventListener("click", () => {
   const keyword = document.getElementById("keyword").value;
-  ipcRenderer.invoke("submit-keyword", keyword).then((response) => {
-    alert("You submitted: " + response);
+  ipcRenderer.invoke("submit", keyword).then((response) => {
+    return response;
   });
 });
 
 document.getElementById("submit-machine").addEventListener("click", () => {
   const machineId = document.getElementById("machine-select").value;
   ipcRenderer.invoke("submit-machine", machineId).then((response) => {
-    alert("You selected: " + response);
+    return response;
   });
 });
 
