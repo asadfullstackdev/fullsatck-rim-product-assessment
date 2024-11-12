@@ -4,17 +4,120 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RIM Product</title>
-    <link rel="stylesheet" href="style.css" />
+    <!-- Link to external stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="keyword-section">
-      <input type="text" id="keyword" placeholder="Enter keyword" />
-      <button id="submit">Submit</button>
+    <!-- Heading for the page -->
+    <h1>RIM Product Assessment</h1>
+
+    <div id="container">
+      <div id="keyword-section">
+        <input type="text" id="keyword" placeholder="Enter keyword" />
+        <button id="submit">Submit</button>
+        <p id="keyword-error" style="color: red; display: none">
+          Please enter a keyword.
+        </p>
+      </div>
+      <div id="machine-section" style="display: none">
+        <select id="machine-select">
+          <option value="">Select a machine</option>
+          <option value="Centaurus">Centaurus</option>
+          <option value="Vanguard">Vanguard</option>
+          <option value="Quantum">Quantum</option>
+          <option value="Equinox">Equinox</option>
+          <option value="Helios">Helios</option>
+          <option value="Triton">Triton</option>
+        </select>
+        <button id="submit-machine">Submit</button>
+        <p id="machine-error" style="color: red; display: none">
+          Please select a machine.
+        </p>
+      </div>
+      <div id="machine-details" style="display: none">
+        <h2>Machine Details</h2>
+        <p id="machine-name"></p>
+        <p id="machine-description"></p>
+      </div>
     </div>
-    <div id="machine-section">
-      <select id="machine-select"></select>
-      <button id="submit-machine">Submit</button>
-    </div>
-    <script src="renderer.js"></script>
+
+    <script>
+      // Select the elements
+      const keywordInput = document.getElementById("keyword");
+      const machineSelect = document.getElementById("machine-select");
+      const submitButton = document.getElementById("submit");
+      const submitMachineButton = document.getElementById("submit-machine");
+      const keywordError = document.getElementById("keyword-error");
+      const machineError = document.getElementById("machine-error");
+      const machineDetailsSection = document.getElementById("machine-details");
+      const machineName = document.getElementById("machine-name");
+      const machineDescription = document.getElementById("machine-description");
+
+      // Machine details
+      const machineData = {
+        Centaurus: {
+          name: "Centaurus",
+          description:
+            "Centaurus is a high-performance server used for scientific simulations.",
+        },
+        Vanguard: {
+          name: "Vanguard",
+          description:
+            "Vanguard is designed for secure cloud applications and data management.",
+        },
+        Quantum: {
+          name: "Quantum",
+          description:
+            "Quantum is an advanced AI machine, perfect for data analysis and predictive modeling.",
+        },
+        Equinox: {
+          name: "Equinox",
+          description:
+            "Equinox is a balanced machine that combines performance with energy efficiency.",
+        },
+        Helios: {
+          name: "Helios",
+          description:
+            "Helios is optimized for large-scale computational workloads.",
+        },
+        Triton: {
+          name: "Triton",
+          description:
+            "Triton is known for its speed and stability in real-time applications.",
+        },
+      };
+
+      // Add event listener for the keyword input form submission
+      submitButton.addEventListener("click", function () {
+        const keywordValue = keywordInput.value.trim();
+
+        // Keyword validation
+        if (keywordValue === "") {
+          keywordError.style.display = "block"; // Show error if empty
+        } else {
+          keywordError.style.display = "none"; // Hide error if input is valid
+          // Show machine section after keyword is entered
+          document.getElementById("keyword-section").style.display = "none";
+          document.getElementById("machine-section").style.display = "block";
+        }
+      });
+
+      // Add event listener for the machine select form submission
+      submitMachineButton.addEventListener("click", function () {
+        const selectedMachine = machineSelect.value;
+
+        // Machine selection validation
+        if (selectedMachine === "") {
+          machineError.style.display = "block"; // Show error if no machine is selected
+        } else {
+          machineError.style.display = "none"; // Hide error if a machine is selected
+          // Show machine details after machine selection
+          const details = machineData[selectedMachine];
+          machineName.textContent = details.name;
+          machineDescription.textContent = details.description;
+          machineDetailsSection.style.display = "block"; // Show machine details
+        }
+      });
+    </script>
   </body>
 </html>
