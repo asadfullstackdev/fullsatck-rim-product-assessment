@@ -4,7 +4,6 @@ FROM node:16
 # Set working directory
 WORKDIR /app
 
-# Copy only package.json and package-lock.json first to install dependencies
 COPY package*.json ./
 
 # Install necessary dependencies for Electron

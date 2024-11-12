@@ -14,7 +14,6 @@ document.getElementById("submit-machine").addEventListener("click", () => {
   });
 });
 
-// Fetch the machine list and update the UI
 ipcRenderer.invoke("get-machines").then((machines) => {
   if (machines.length > 0) {
     const machineSelect = document.getElementById("machine-select");
