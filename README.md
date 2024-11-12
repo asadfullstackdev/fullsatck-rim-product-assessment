@@ -93,3 +93,7 @@ Follow these steps to set up the project on your local machine:
 ### Interaction
 
 The frontend will display either a keyword input or a machine selection dropdown depending on whether any machines are returned from the API.
+
+![Image](/images/image1.png)
+![Image](/images/image2.png)
+![Image](/images/image3.png)
